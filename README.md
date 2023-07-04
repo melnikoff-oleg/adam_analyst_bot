@@ -5,3 +5,4 @@ How to use:
 - create .env file and paste write your tokens there: TELEGRAM_BOT_TOKEN=..., OPENAI_API_TOKEN=...
 - docker build --tag adam_analyst_bot .
 - docker run adam_analyst_bot python3 bot.py
+- (if needed to clean docker use docker system prune -a and docker volume prune)
