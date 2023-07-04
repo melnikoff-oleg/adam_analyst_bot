@@ -24,3 +24,4 @@ __pycache__/
 .env
 py_log.log
 poetry.lock
+venv/

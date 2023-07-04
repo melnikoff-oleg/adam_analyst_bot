@@ -143,6 +143,7 @@ async def query_processing(message: types.Message, state: FSMContext):
 
 async def on_startup(dp: Dispatcher) -> None:
     await set_bot_commands(dp)
+    print("Bot started")
 
 
 if __name__ == "__main__":
