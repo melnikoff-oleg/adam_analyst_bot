@@ -29,5 +29,5 @@ async def process_query(
     )
     await message.reply(
         response
-        + "\n\nЗадайте следующий вопрос, либо воспользуйтесь командой /restart чтобы начать работу с новым набором данных."
+        + "\n\nAsk the following question, or use the /restart command to start working with a new dataset."
     )

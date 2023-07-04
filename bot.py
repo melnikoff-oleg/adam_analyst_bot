@@ -37,7 +37,7 @@ def get_status_callback(chat_id: int) -> Callable[[str], Awaitable]:
 @dp.message_handler(commands="start")
 async def start(message: types.Message, state: FSMContext):
     await message.answer(
-        "Отправьте мне файл с данными и текстовое описание данных одним сообщением. Доступные форматы: CSV, JSON и XLSX."
+        "Send me a data file and a textual description of the data in one message. Available formats: CSV, JSON and XLSX."
     )
 
     await UserSession.SendingFile.set()
@@ -65,16 +65,18 @@ async def process_file(message: types.Message, state: FSMContext):
 
     # Check if message has document
     if not message.document:
-        await message.reply("Отправьте файл с расширением CSV, JSON или XLSX.")
+        await message.reply("Submit a CSV, JSON, or XLSX file.")
         return
 
     # Check if message has text and text length > 30
     if not message.caption:
-        await message.reply("Отправьте файл с описанием. Описание должно быть не менее 30 символов")
+        await message.reply(
+            "Submit a file with a description. The description must be at least 30 characters long."
+        )
         return
 
     if len(message.caption) < 30:
-        await message.reply("Описание должно быть не менее 30 символов.")
+        await message.reply("The description must be at least 30 characters long.")
         return
 
     document_id = message.document.file_id
@@ -94,27 +96,21 @@ async def process_file(message: types.Message, state: FSMContext):
             data["file_path"] = local_file_path
             data["file_description"] = message.caption
 
-        await message.reply("Ваш файл успешно загружен. Какой вопрос вы хотите задать?")
-
-        # await bot.send_chat_action(chat_id, types.ChatActions.TYPING)
-        # process_model_result = await process_file_with_model(
-        #     local_file_path, get_status_callback(chat_id)
-        # )
-
-        # await message.reply(f"Обработка файла завершена. Отправляю результат...")
-        # await bot.send_message(chat_id, process_model_result)
+        await message.reply(
+            "Your file has been successfully uploaded. What question do you want to ask?"
+        )
 
         await UserSession.QueryProcessing.set()
     else:
         await message.reply(
-            "Такой формат не поддерживается. Попробуйте еще раз. Отправьте файл с расширением CSV, JSON или XLSX."
+            "This format is not supported. Try again. Submit a CSV, JSON, or XLSX file."
         )
         await UserSession.Idle.set()
 
 
 @dp.message_handler(state=UserSession.Processing)
 async def ignore_messages_while_processing(message: types.Message):
-    await message.reply("Я занят обработкой предыдущего файла. Пожалуйста, подождите.")
+    await message.reply("I am busy processing the previous file. Please wait.")
 
 
 @dp.message_handler(state=UserSession.QueryProcessing)

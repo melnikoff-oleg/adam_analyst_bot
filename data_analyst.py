@@ -79,25 +79,25 @@ def use_data_assistant(
     question: str,
 ) -> str:
     build_plots = False
-    for plot_keyword in [
-        "график",
-        "нарисовать",
-        "нарисуй",
-        "распределение",
-        "изобра",
-        "chart",
-        "plot",
-        "graph",
-        "draw",
-    ]:
-        if plot_keyword in question.lower():
-            build_plots = True
+    # for plot_keyword in [
+    #     "график",
+    #     "нарисовать",
+    #     "нарисуй",
+    #     "распределение",
+    #     "изобра",
+    #     "chart",
+    #     "plot",
+    #     "graph",
+    #     "draw",
+    # ]:
+    #     if plot_keyword in question.lower():
+    #         build_plots = True
     ag, df_head, df_info = preparation(
         path=data_path,
         build_plots=build_plots,
         user_data_description=data_description,
     )
     try:
-        return f"Ответ: {ag.run(input=question, df_head=df_head, df_info=df_info.getvalue())}"
+        return f"Answer: {ag.run(input=question, df_head=df_head, df_info=df_info.getvalue())}"
     except Exception as e:
         return f"Failed with error: {traceback.format_exc()}"
