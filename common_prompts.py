@@ -81,6 +81,7 @@ This is result of printing ```df.info()```:
 Begin!
 
 Question: {input}
+Final Result should be ONLY in Russian, the rest can be in English. ALSWAYS CHECK YOUR FINAL ANSWER, IT SHOULD BE IN RUSSIAN
 
 {agent_scratchpad}
 """
