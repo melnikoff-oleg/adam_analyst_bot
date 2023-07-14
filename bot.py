@@ -38,7 +38,7 @@ def get_status_callback(chat_id: int) -> Callable[[str], Awaitable]:
 @dp.message_handler(commands="start")
 async def start(message: types.Message, state: FSMContext):
     await message.answer(
-        "Send me a data file that you want to analyze. Available formats: CSV, JSON and XLSX."
+        "Пришлите мне файл данных, который вы хотите проанализировать. Доступные форматы: CSV, JSON и XLSX."
     )
 
     await UserSession.SendingFile.set()
@@ -57,7 +57,7 @@ async def cancel(message: types.Message, state: FSMContext):
         return
 
     await state.finish()
-    await message.answer("Cancelled.")
+    await message.answer("Отменено.")
 
 
 @dp.message_handler(content_types=types.ContentType.DOCUMENT, state=UserSession.SendingFile)
@@ -66,7 +66,7 @@ async def process_file(message: types.Message, state: FSMContext):
 
     # Check if message has document
     if not message.document:
-        await message.reply("Submit a CSV, JSON, or XLSX file.")
+        await message.reply("Отправьте файл CSV, JSON или XLSX.")
         return
 
     # Check if message has text and text length > 30
@@ -97,13 +97,13 @@ async def process_file(message: types.Message, state: FSMContext):
             data["file_path"] = local_file_path
 
         await message.reply(
-            "Your file has been successfully uploaded. Now submit a textual description of the data."
+            "Ваш файл успешно загружен. Теперь отправьте текстовое описание данных."
         )
 
         await UserSession.SendingDescription.set()
     else:
         await message.reply(
-            "This format is not supported. Try again. Submit a CSV, JSON, or XLSX file."
+            "Этот формат не поддерживается. Попробуйте еще раз. Отправьте файл CSV, JSON или XLSX."
         )
         await UserSession.Idle.set()
 
@@ -116,34 +116,30 @@ async def process_file_description(message: types.Message, state: FSMContext):
 
     # Check if message has text and text length > 30
     if not file_description:
-        await message.reply(
-            "Submit a file description. The description must be at least 30 characters long."
-        )
+        await message.reply("Отправьте описание файла. Описание должно быть не менее 30 символов.")
         return
 
     if len(file_description) < 30:
-        await message.reply("The description must be at least 30 characters long.")
+        await message.reply("Описание должно быть не менее 30 символов.")
         return
 
     async with state.proxy() as data:
         data["file_description"] = file_description
 
-    await message.reply(
-        "File and description have been successfully uploaded. What question do you want to ask?"
-    )
+    await message.reply("Файл и описание успешно загружены. Какой вопрос вы хотите задать?")
 
     await UserSession.QueryProcessing.set()
 
 
 @dp.message_handler(state=UserSession.Processing)
 async def ignore_messages_while_processing(message: types.Message):
-    await message.reply("I am busy processing the previous file. Please wait.")
+    await message.reply("Я занят обработкой предыдущего файла. Пожалуйста, подождите.")
 
 
 @dp.message_handler(state=UserSession.QueryProcessing)
 async def query_processing(message: types.Message, state: FSMContext):
     msg = await message.reply(
-        'Started working on your question, it may take from 15 seconds up to 1 minute...'
+        'Начал работать над вашим вопросом, это может занять от 15 секунд до 1 минуты...'
     )
     question = message.text
 
