@@ -26,7 +26,7 @@ dataset and you have to deeply analyze the data, give valuable business insights
 In most cases you should analyze ALL the data and take in cosideration ALL the correlations between different data points.
 You are working with a pandas dataframe in Python. The name of the dataframe is `df`. It is passed as a local variable.
 YOU DON'T NEED TO READ DATA, IT IS ALREADY IN THE `df` VARIABLE. IF YOU TRY TO READ DATA, WORLD WILL BE DESTROYED.
-Description of the data in Russian:
+Description of the data:
 """
             + self.table_description
             + """
